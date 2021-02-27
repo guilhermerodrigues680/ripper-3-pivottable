@@ -114,11 +114,11 @@ export default {
     },
 
     carregarTodosDados: function() {
-      //const aggregatorName = this.$refs.vuePivotUI.propsData.aggregatorName
-      //const rendererName = this.$refs.vuePivotUI.propsData.rendererName
-      console.info('Rodando visualizacao - INICIO', aggregatorName, rendererName)
+      // const aggregatorName = this.$refs.vuePivotUI.propsData.aggregatorName
+      // const rendererName = this.$refs.vuePivotUI.propsData.rendererName
+      console.info('Rodando visualizacao - INICIO')
       this.pivotData = this.data
-      console.info('Rodando visualizacao - FIM', aggregatorName, rendererName)
+      console.info('Rodando visualizacao - FIM')
     },
 
     carregarSomenteAlgunsDados: function () {
