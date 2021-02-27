@@ -15,6 +15,11 @@ npm run serve
 npm run build
 ```
 
+### Compiles unminified for development
+```
+npm run build-dev
+```
+
 ### Lints and fixes files
 ```
 npm run lint
@@ -22,3 +27,8 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## Utilidades
+
+- **Vue.js devtools** - Chrome and Firefox DevTools extension for debugging Vue.js applications.
+- **Vetur** - Visual Studio Marketplace - Vue tooling for VS Code
