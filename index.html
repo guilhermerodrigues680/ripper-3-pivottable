@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PivotTable CSV</title>
+    <!-- external libs from cdnjs -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css">
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-1.2.0.min.js"></script>
+
+    <!-- PivotTable.js libs from pivottable/dist -->
+    <link rel="stylesheet" type="text/css" href="pivottable/dist/pivot.css">
+    <script type="text/javascript" src="pivottable/dist/pivot.js"></script>
+    <script type="text/javascript" src="pivottable/dist/plotly_renderers.js"></script>
+    <script type="text/javascript" src="pivottable/dist/d3_renderers.js"></script>
+    <script type="text/javascript" src="pivottable/dist/c3_renderers.js"></script>
+    <script type="text/javascript" src="pivottable/dist/export_renderers.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="whiteborder">
+  <!-- No inicio do body -->
+  <script src="app.js"></script>
+
+  <div class="wrapper">
+    <div class="app-content">
+      <h3>Pivottable CSV - v0.0.1-beta</h3>
+      
+      <div>
+        <div>
+          Solte um arquivo CSV nesta página ou
+          <label class="file-chooser">
+            escolha um:
+            <input type="file" id="csv-chooser" accept=".csv">
+          </label>
+        </div>
+        <div>
+          <div>Arquivo: <span id="csv-file-name">null</span></div>
+          <div>Tamanho do arquivo: <span id="total-bytes-file">null</span></div>
+          <div>Linhas geradas: <span id="total-linhas-geradas">null</span></div>
+          <div>Linhas carregadas: <span id="total-linhas-carregadas">null</span></div>
+        </div>
+        <em><small>Nota: os dados nunca saem do seu navegador.</small></em>
+      </div>
+    </div>
+
+    <div id="pivottable-csv-output"></div>
+  </div>
+</body>
+</html>
