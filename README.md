@@ -12,7 +12,8 @@ python -m SimpleHTTPServer
 python3 -m http.server
 ```
 
-### Versão 0.0.1-alpha.1 - Vue.js
+### Outras versões
+#### Versão 0.0.1-alpha.1 - Vue.js
 
 Disponivel em: [https://raw.githack.com/guilhermerodrigues680/ripper-3-pivottable/0.0.1-alpha.1/docs/index.html](https://raw.githack.com/guilhermerodrigues680/ripper-3-pivottable/0.0.1-alpha.1/docs/index.html)
 
