@@ -92,16 +92,42 @@ body {
 }
 
 .btn-default {
-  background-color: silver;
-  padding: 5px;
+  background-color: #42a5f5;
+  color: #fff;
+  padding: 2px 5px;
   text-align: center;
   text-decoration: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 16px;
 }
 
 .btn-default:hover {
-  background-color: #11b833; /* Green */
+  background-color: #64b5f6;
+}
+
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.my-05 {
+  margin-top: 0.125rem;
+  margin-bottom: 0.125rem;
+}
+
+.input-default {
+  border: 1px solid #2c3e50;
+  width: 350px;
+  padding: 2px;
+}
+
+.bg-red-500 {
+  background-color: rgba(239, 68, 68);
+}
+
+.bg-red-500:hover {
+  background-color: rgb(241, 132, 132);
 }
 
 #pivottable-csv-output {

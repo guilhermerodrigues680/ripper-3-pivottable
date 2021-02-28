@@ -32,6 +32,73 @@ function convertCSVRipperToNumber(csvArr) {
   })
 }
 
+/**
+ * Retorna o texto com a primeira letra em maisculo 
+ * @param {String} str Texto qualquer
+ */
+function upperCaseFirstLetter(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}
+
+const viewManager = {
+  getStoredViews: function () {
+    const pivotConfigStr = localStorage.getItem("pivotConfig");
+    if(!pivotConfigStr) {
+      return {}; // objeto vazio
+    }
+    return JSON.parse(pivotConfigStr)
+  },
+
+  saveView: function (name, pivotConfig) {
+    const storedViews = this.getStoredViews();
+    storedViews[name] = pivotConfig
+    localStorage.setItem("pivotConfig", JSON.stringify(storedViews))
+    console.debug("Visualizacao armazenada!", storedViews[name])
+    return this.getStoredViews();
+  },
+
+  getStoredViewByName: function (name) {
+    return this.getStoredViews()[name];
+  },
+
+  deleteStoredViewByName: function (name) {
+    const storedViews = this.getStoredViews();
+    delete storedViews[name]
+    localStorage.setItem("pivotConfig", JSON.stringify(storedViews))
+    console.debug("Visualizacao deletada!", storedViews[name])
+    return true;
+  },
+
+  exportJsonStoredViews: function () {
+    const storedViewsStr = localStorage.getItem("pivotConfig") || "{}"
+    const blobx = new Blob([storedViewsStr], { type: 'application/json' });
+    const elemx = window.document.createElement('a');
+    elemx.target = "_blank"
+    elemx.href = window.URL.createObjectURL(blobx);
+    elemx.download = `views-${new Date().toISOString().replaceAll(/[:,.]/g, '-')}.json`;
+    elemx.style.display = 'none';
+    document.body.appendChild(elemx);
+    elemx.click();
+    document.body.removeChild(elemx);
+  },
+
+  importViews: async function (file) {
+    return new Promise((resolve, reject) => {
+      if (!file || !file.name) {
+        alert('Nenhum arquivo recebido')
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.addEventListener('load', event => {
+        localStorage.setItem("pivotConfig", event.target.result)
+        resolve(this.getStoredViews())
+      });
+      reader.readAsText(file);
+    })
+  }
+}
+
 // Global Vars
 let pivotData;
 
@@ -115,15 +182,17 @@ $(function(){
       return;
     }
 
-    const config = $("#pivottable-csv-output").data("pivotUIOptions");
-    const config_copy = JSON.parse(JSON.stringify(config)); // Fast cloning with data loss
+    const configObj = $("#pivottable-csv-output").data("pivotUIOptions");
+    const configCopy = JSON.parse(JSON.stringify(configObj)); // Fast cloning with data loss
 
     //delete some values which will not serialize to JSON
-    delete config_copy["aggregators"];
-    delete config_copy["renderers"];
+    delete configCopy["aggregators"];
+    delete configCopy["renderers"];
 
-    console.debug("pivotConfig", JSON.stringify(config_copy))
-    localStorage.setItem("pivotConfig", JSON.stringify(config_copy))
+    const viewName = upperCaseFirstLetter($("#nome-visualizacao").val())
+    const storedViewsUpdated = viewManager.saveView(viewName, configCopy)
+    storedViewsControl(storedViewsUpdated)
+    $("#nome-visualizacao").val(null)
   });
   
   $("#btn-carregar-visualizacao").on("click", function() {
@@ -132,11 +201,49 @@ $(function(){
       return;
     }
 
-    console.debug(localStorage.getItem("pivotConfig"))
-    const config = JSON.parse(localStorage.getItem("pivotConfig"))
-    config.renderers = renderers
-    console.debug(config)
-    $("#pivottable-csv-output").pivotUI(pivotData, config, true);
+    const viewName = $("#stored-views").val()
+    const viewPivotConfig = viewManager.getStoredViewByName(viewName);
+    
+    if (!viewPivotConfig) {
+      alert('Nenhuma view encontrada')
+      return;
+    }
+
+    viewPivotConfig.renderers = renderers
+    $("#pivottable-csv-output").pivotUI(pivotData, viewPivotConfig, true);
+    $("#stored-views").val(null)
   });
 
+  $("#btn-deletar-visualizacao").on("click", () => {
+    const viewName = $("#stored-views").val()
+    const success = viewManager.deleteStoredViewByName(viewName);
+    if(!success) {
+      alert('Nada deletado!')
+      return
+    }
+    storedViewsControl(viewManager.getStoredViews())
+    $("#stored-views").val(null)
+  })
+
+  $("#btn-exportar-visualizacoes").on("click", () => viewManager.exportJsonStoredViews())
+  
+  $("#btn-importar-visualizacoes").bind("change", async event => {
+    const storedViewsUpdated = await viewManager.importViews(event.target.files[0])
+    console.debug(storedViewsUpdated)
+    storedViewsControl(storedViewsUpdated)
+  })
+
+  /**
+   * @param {Array} storedViews 
+   */
+  const storedViewsControl = function (storedViews) {
+    const $dropdown = $("#stored-views");
+    $dropdown.empty()
+    for (const name of Object.keys(storedViews)) {
+      $("#stored-views").append($("<option />").val(name).text(name));
+    }
+    $dropdown.val(null)
+  }
+
+  storedViewsControl(viewManager.getStoredViews())
 });

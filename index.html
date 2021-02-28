@@ -53,9 +53,22 @@
         <em><small>Nota: os dados nunca saem do seu navegador.</small></em>
       </div>
 
-      <div>
+      <h4 class="my-4">Visualizações do usuário</h4>
+      <div class="my-05">
+        <input type="text" id="nome-visualizacao" class="input-default" placeholder="Nome da visualização">
         <button id="btn-salvar-visualizacao" class="btn-default">Salvar visualização no localStorage</button>
+      </div>
+      <div class="my-05">
+        <select id="stored-views" class="input-default"></select>
         <button id="btn-carregar-visualizacao" class="btn-default">Carregar visualização do localStorage</button>
+        <button id="btn-deletar-visualizacao" class="btn-default bg-red-500">Deletar visualização do localStorage</button>
+      </div>
+      <div class="my-05">
+        <button id="btn-exportar-visualizacoes" class="btn-default">Exportar Visualizações</button>
+        <label>
+          <span class="btn-default">Importar Visualizações</span>
+          <input id="btn-importar-visualizacoes" type="file" style="display: none;">
+        </label>
       </div>
     </div>
 
