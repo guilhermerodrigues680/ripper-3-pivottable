@@ -91,6 +91,19 @@ body {
   cursor: pointer;
 }
 
+.btn-default {
+  background-color: silver;
+  padding: 5px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-default:hover {
+  background-color: #11b833; /* Green */
+}
+
 #pivottable-csv-output {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   margin: 20px 0px;

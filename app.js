@@ -32,6 +32,10 @@ function convertCSVRipperToNumber(csvArr) {
   })
 }
 
+// Global Vars
+let pivotData;
+
+// jquery
 $(function(){
   const renderers = $.extend(
     $.pivotUtilities.renderers,
@@ -65,6 +69,7 @@ $(function(){
         $('#total-linhas-geradas').text(parsed.data.length)
         $('#total-linhas-carregadas').text(parsed.data.length)
         const data = convertCSVRipperToNumber(parsed.data);
+        pivotData = data;
         $("#pivottable-csv-output").pivotUI(data, { renderers: renderers }, true);
       }
     });
@@ -101,5 +106,37 @@ $(function(){
     .on("dragend", endDrag)
     .on("dragexit", endDrag)
     .on("dragleave", endDrag)
-    .on("drop", dropped);  
+    .on("drop", dropped);
+    
+  // Salvar e carregar visualizacoes
+  $("#btn-salvar-visualizacao").on("click", function() {
+    if (!pivotData) {
+      alert('Nenhuma base de dados carregada')
+      return;
+    }
+
+    const config = $("#pivottable-csv-output").data("pivotUIOptions");
+    const config_copy = JSON.parse(JSON.stringify(config)); // Fast cloning with data loss
+
+    //delete some values which will not serialize to JSON
+    delete config_copy["aggregators"];
+    delete config_copy["renderers"];
+
+    console.debug("pivotConfig", JSON.stringify(config_copy))
+    localStorage.setItem("pivotConfig", JSON.stringify(config_copy))
+  });
+  
+  $("#btn-carregar-visualizacao").on("click", function() {
+    if (!pivotData) {
+      alert('Nenhuma base de dados carregada')
+      return;
+    }
+
+    console.debug(localStorage.getItem("pivotConfig"))
+    const config = JSON.parse(localStorage.getItem("pivotConfig"))
+    config.renderers = renderers
+    console.debug(config)
+    $("#pivottable-csv-output").pivotUI(pivotData, config, true);
+  });
+
 });
