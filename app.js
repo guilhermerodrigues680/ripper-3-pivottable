@@ -69,6 +69,22 @@ const viewManager = {
     return true;
   },
 
+  checkStoredViewsUpdate: function () {
+    const pivotConfigStr = localStorage.getItem("pivotConfig");
+    if(!pivotConfigStr) {
+      return;
+    }
+
+    // Faz a compatibilidade com exportações anteriores
+    const storedViewsDB = JSON.parse(pivotConfigStr);
+    for (const value of Object.values(storedViewsDB)) {
+      //delete some bulky default values
+      delete value["rendererOptions"];
+      delete value["localeStrings"];
+    }
+    localStorage.setItem("pivotConfig", JSON.stringify(storedViewsDB))
+  },
+
   exportJsonStoredViews: function () {
     const storedViewsStr = localStorage.getItem("pivotConfig") || "{}"
     const blobx = new Blob([storedViewsStr], { type: 'application/json' });
@@ -99,12 +115,19 @@ const viewManager = {
   }
 }
 
+// Checagem de idioma
+// "pt" ou "en"
+const locale = new URLSearchParams(window.location.search).get('lang');
+if (!locale || locale.toLowerCase() !== "pt" && locale.toLowerCase() !== "en") {
+  window.location.replace(`${location.protocol}//${location.host}${location.pathname}?lang=pt`)
+}
+
 // Global Vars
 let pivotData;
 
 // jquery
 $(function(){
-  const renderers = $.extend(
+  const enRenderers = $.extend(
     $.pivotUtilities.renderers,
     $.pivotUtilities.plotly_renderers,
     $.pivotUtilities.c3_renderers,
@@ -112,6 +135,17 @@ $(function(){
     $.pivotUtilities.export_renderers,
     $.pivotUtilities.app_renderers
   );
+  
+  const ptRenderers = $.extend(
+    $.pivotUtilities.locales.pt.renderers,
+    $.pivotUtilities.locales.pt.plotly_renderers,
+    $.pivotUtilities.locales.pt.c3_renderers,
+    $.pivotUtilities.locales.pt.d3_renderers,
+    $.pivotUtilities.locales.pt.export_renderers,
+    $.pivotUtilities.locales.pt.app_renderers
+  );
+
+  const renderers = locale === "pt" ? ptRenderers : enRenderers;
 
   /**
    * @param {File} file Arquivo CSV
@@ -138,7 +172,7 @@ $(function(){
         $('#total-linhas-carregadas').text(parsed.data.length)
         const data = convertCSVRipperToNumber(parsed.data);
         pivotData = data;
-        $("#pivottable-csv-output").pivotUI(data, { renderers: renderers }, true);
+        $("#pivottable-csv-output").pivotUI(data, { renderers: renderers }, true, locale);
       }
     });
   };
@@ -189,6 +223,9 @@ $(function(){
     //delete some values which will not serialize to JSON
     delete configCopy["aggregators"];
     delete configCopy["renderers"];
+    //delete some bulky default values
+    delete configCopy["rendererOptions"];
+    delete configCopy["localeStrings"];
 
     const viewName = upperCaseFirstLetter($("#nome-visualizacao").val())
     const storedViewsUpdated = viewManager.saveView(viewName, configCopy)
@@ -246,5 +283,6 @@ $(function(){
     $dropdown.val(null)
   }
 
+  viewManager.checkStoredViewsUpdate()
   storedViewsControl(viewManager.getStoredViews())
 });
