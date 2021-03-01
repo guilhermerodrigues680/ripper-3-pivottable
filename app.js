@@ -109,7 +109,8 @@ $(function(){
     $.pivotUtilities.plotly_renderers,
     $.pivotUtilities.c3_renderers,
     $.pivotUtilities.d3_renderers,
-    $.pivotUtilities.export_renderers
+    $.pivotUtilities.export_renderers,
+    $.pivotUtilities.app_renderers
   );
 
   /**
