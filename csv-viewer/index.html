@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSV Viewer</title>
+
+  <script src="../vendor/jquery.min.js"></script>
+  <script src="../vendor/papaparse.min.js"></script>
+  <script src="../vendor/handsontable/handsontable.full.min.js"></script>
+  <link href="../vendor/handsontable/handsontable.full.min.css" rel="stylesheet" media="screen">
+  <script src="../vendor/sweetalert-2.1.2/sweetalert.min.js"></script>
+  <link href="../vendor/tailwindcss-2.0.3/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+  <div id="container-csv-chooser">
+    Solte um arquivo CSV nesta página ou
+    <label class="file-chooser">
+      escolha um:
+      <input type="file" id="csv-chooser" accept=".csv">
+    </label>
+  </div>
+
+  <div id="example"></div>
+
+  <script src="csv-viewer.js"></script>
+</body>
+</html>

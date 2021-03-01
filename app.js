@@ -285,4 +285,10 @@ $(function(){
 
   viewManager.checkStoredViewsUpdate()
   storedViewsControl(viewManager.getStoredViews())
+
+
+  $("#btn-csv-viewer").on('click', () => {
+    const csvViewerWindow = window.open("csv-viewer/index.html");
+    csvViewerWindow.pivotData = pivotData;
+  })
 });
