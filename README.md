@@ -13,6 +13,11 @@ python3 -m http.server
 ```
 
 ### Outras versões
+
+#### Versão instável na branch **develop**
+
+Disponivel em: [https://raw.githack.com/guilhermerodrigues680/ripper-3-pivottable/develop/index.html](https://raw.githack.com/guilhermerodrigues680/ripper-3-pivottable/develop/index.html)
+
 #### Versão 0.0.1-alpha.1 - Vue.js
 
 Disponivel em: [https://raw.githack.com/guilhermerodrigues680/ripper-3-pivottable/0.0.1-alpha.1/docs/index.html](https://raw.githack.com/guilhermerodrigues680/ripper-3-pivottable/0.0.1-alpha.1/docs/index.html)
