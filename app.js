@@ -285,4 +285,19 @@ $(function(){
 
   viewManager.checkStoredViewsUpdate()
   storedViewsControl(viewManager.getStoredViews())
+
+  $("#btn-teste").on("click", () => {
+    var newWindow = window.open("csv-grid.html");
+    newWindow.pivotData = pivotData
+    console.log(newWindow)
+    // const blobx = new Blob([storedViewsStr], { type: 'application/json' });
+    // const elemx = window.document.createElement('a');
+    // elemx.target = "_blank"
+    // elemx.href = window.URL.createObjectURL(blobx);
+    // elemx.download = `views-${new Date().toISOString().replaceAll(/[:,.]/g, '-')}.json`;
+    // elemx.style.display = 'none';
+    // document.body.appendChild(elemx);
+    // elemx.click();
+    // document.body.removeChild(elemx);
+  })
 });

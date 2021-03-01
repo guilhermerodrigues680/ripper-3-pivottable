@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://unpkg.com/x-data-spreadsheet@1.1.5/dist/xspreadsheet.css">
+  <script src="https://unpkg.com/x-data-spreadsheet@1.1.5/dist/xspreadsheet.js"></script>
+</head>
+<body>
+  <div id="xspreadsheet"></div>
+
+  <script>
+    const initData = [
+      // { name: "sheet2", freeze: "A1", styles: [], merges: [], rows: { "6": { cells: { "3": { text: "Guilherme novo" } } }, len: 100 }, cols: { len: 26 }, validations: [], autofilter: {} },
+      // { name: "sheet3", freeze: "A1", styles: [], merges: [], rows: { "8": { cells: { "1": { text: "as" } } }, len: 100 }, cols: { len: 26 }, validations: [], autofilter: {} }
+      {
+        name: "nome",
+        rows: {
+          0: {
+            cells: {
+              0: { text: 'HEader0' },
+              2: { text: 'HEader2' },
+            },
+          }
+        }
+      }
+    ];
+
+    function csvToXSpreadsheet(data) {
+      //const data = data0.filter((_,idx) => idx < 20000)
+      
+      const out = {
+        name: "csv-imported",
+        freeze: "A2",
+        rows: { len: data.length }
+      }
+      data.forEach((row, i) => {
+        const cells = row.reduce((acum, el, idx) => { acum[idx] = { text: el }; return acum }, {})
+        out.rows[i] = { cells: cells }
+      });
+
+      return out;
+    }
+
+    if (window.pivotData) {
+      console.debug('tem pivot data')
+      initData.splice(0, initData.length)
+      const xData = csvToXSpreadsheet(window.pivotData)
+      initData.push(xData)
+    }
+
+    const options = {
+      mode: 'read', // edit | read
+      showToolbar: false,
+      showGrid: true,
+      showContextmenu: false
+    };
+    window.excel = x_spreadsheet('#xspreadsheet', options)
+    //.loadData({}) // load data
+    .loadData(initData) // load data
+    .change(data => {
+      // save data to db
+      console.log(data)
+    });
+  </script>
+</body>
+</html>
