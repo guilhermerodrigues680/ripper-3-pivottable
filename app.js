@@ -104,13 +104,24 @@ let pivotData;
 
 // jquery
 $(function(){
-  const renderers = $.extend(
+  const enRenderers = $.extend(
     $.pivotUtilities.renderers,
     $.pivotUtilities.plotly_renderers,
     $.pivotUtilities.c3_renderers,
     $.pivotUtilities.d3_renderers,
     $.pivotUtilities.export_renderers
   );
+  
+  const ptRenderers = $.extend(
+    $.pivotUtilities.locales.pt.renderers,
+    $.pivotUtilities.plotly_renderers,
+    $.pivotUtilities.locales.pt.c3_renderers,
+    $.pivotUtilities.locales.pt.d3_renderers,
+    $.pivotUtilities.export_renderers
+  );
+
+  const locale = "pt"; // "en"
+  const renderers = locale === "pt" ? ptRenderers : enRenderers;
 
   /**
    * @param {File} file Arquivo CSV
@@ -137,7 +148,7 @@ $(function(){
         $('#total-linhas-carregadas').text(parsed.data.length)
         const data = convertCSVRipperToNumber(parsed.data);
         pivotData = data;
-        $("#pivottable-csv-output").pivotUI(data, { renderers: renderers }, true);
+        $("#pivottable-csv-output").pivotUI(data, { renderers: renderers }, true, locale);
       }
     });
   };
