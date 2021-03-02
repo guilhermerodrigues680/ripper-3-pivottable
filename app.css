@@ -1,0 +1,61 @@
+/* Drag and drop class */
+.greyborder {
+  border-color: rgb(239, 68, 68);
+}
+
+/* Borda da UI */
+#pivottable-csv-output > .pvtUi {
+  border: 1px solid rgba(229, 231, 235);
+}
+
+/* Inputs da UI */
+#pivottable-csv-output .pvtRenderer,
+#pivottable-csv-output .pvtAggregator,
+#pivottable-csv-output .pvtAttrDropdown {
+  border: 1px solid rgba(229, 231, 235);
+  border-radius: 0.5rem;
+  padding: 0.25rem;
+  color: rgba(31, 41, 55);
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+/* Atributos arrastáveis */
+#pivottable-csv-output .pvtAttr {
+  background: #fff;
+  border: 1px solid rgb(37, 99, 235);
+  padding: 0.25rem 0.5rem;
+  color: rgb(37, 99, 235);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+/* Fundo dos quadrantes da UI */
+#pivottable-csv-output .pvtAxisContainer,
+#pivottable-csv-output td.pvtVals.pvtUiCell {
+  border: 1px solid rgb(229, 231, 235);
+  background: rgb(249, 250, 251);
+}
+
+#pivottable-csv-output .pvtFilterBox button {
+  /* background-color: rgb(107, 114, 128); */
+  color: #FFF;
+  padding: 0.25rem 1.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  border-radius: 0.375rem;
+  margin-left: 0.125rem;
+  margin-right: 0.125rem;
+}
+
+#pivottable-csv-output .pvtFilterBox {
+  border-radius: 0.375rem;
+}
+
+div.pvtFilterBox button:nth-child(1) {
+  background-color: rgb(16, 185, 129);
+}
+
+div.pvtFilterBox button:nth-child(2) {
+  background-color: rgb(239, 68, 68);
+}
