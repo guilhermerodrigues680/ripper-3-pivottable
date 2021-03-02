@@ -25,9 +25,12 @@
     <script src="vendor/pivottable/dist/d3_renderers.js"></script>
     <script src="vendor/pivottable/dist/c3_renderers.js"></script>
     <script src="vendor/pivottable/dist/export_renderers.js"></script>
-    <script src="app-pivottable/app_renderers.js"></script>
     <!-- pivottable/dist/pivot.pt.js modificado-->
     <script src="app-pivottable/app_pivot.pt.js"></script>
+    <script src="vendor/multifact-pivottable-1.1.3-b942f30/multifact-pivottable.js"></script>
+    
+    <!-- O App render deve ficar depois de todos os js -->
+    <script src="app-pivottable/app_renderers.js"></script>
 
     <link rel="stylesheet" href="vendor/tailwindcss-2.0.3/tailwind.css">
     <link rel="stylesheet" href="app-pivot.css">
@@ -96,6 +99,10 @@
     </div>
 
     <div class="w-full border border-gray-200 my-4"></div>
+
+    <div>
+      <input type="text" id="receita-distribuicao" class="rounded-lg p-1 border border-gray-200 text-xs text-gray-800 bg-white w-80">
+    </div>
 
     <div id="pivottable-csv-output" class="mt-4"></div>
   </div>

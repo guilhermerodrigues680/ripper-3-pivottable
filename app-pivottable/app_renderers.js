@@ -88,6 +88,10 @@
         })
 
         return $("<div>").append($btnDownload).append($textArea)
+      },
+      "APP - Table Receita": function (pivotData, opts) {
+        const r = $.pivotUtilities.gtRenderers["GT Table"](pivotData, opts);
+        return $("<div />").append('<input type="text"/>').append(r)[0]
       }
     };
   });

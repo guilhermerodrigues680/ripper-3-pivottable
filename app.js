@@ -1,6 +1,7 @@
 import { formatBytes, upperCaseFirstLetter } from "./app-pivottable/util.js";
 import { viewManager } from "./app-pivottable/viewManager.js";
 import { convertCSVRipperToNumber } from "./app-pivottable/csv-ripper.js";
+import { aggMap, derivedAggregations, aggMapParticipacao, derivedAggregationsParticipacaoCalc } from "./app-pivottable/custom-views.js";
 
 
 // Checagem de idioma
@@ -15,13 +16,25 @@ let pivotData;
 
 // jquery
 $(function(){
+
+  //const customAggs = {};
+  // customAggs['Multifact Aggregators'] = $.pivotUtilities.multifactAggregatorGenerator(aggMap,[]);
+  //customAggs['Multifact Aggregators'] = $.pivotUtilities.multifactAggregatorGenerator(aggMap, derivedAggregations);
+  // $.pivotUtilities.customAggs = customAggs
+
+  $.pivotUtilities.customAggs = {
+    'Multifact Aggregators': $.pivotUtilities.multifactAggregatorGenerator(aggMap, derivedAggregations),
+    'Multifact Aggregators Participacao': $.pivotUtilities.multifactAggregatorGenerator(aggMapParticipacao, derivedAggregationsParticipacaoCalc(0))
+  }
+
   const enRenderers = $.extend(
     $.pivotUtilities.renderers,
     $.pivotUtilities.plotly_renderers,
     $.pivotUtilities.c3_renderers,
     $.pivotUtilities.d3_renderers,
     $.pivotUtilities.export_renderers,
-    $.pivotUtilities.app_renderers
+    $.pivotUtilities.app_renderers,
+    $.pivotUtilities.gtRenderers
   );
   
   const ptRenderers = $.extend(
@@ -30,10 +43,54 @@ $(function(){
     $.pivotUtilities.locales.pt.c3_renderers,
     $.pivotUtilities.locales.pt.d3_renderers,
     $.pivotUtilities.locales.pt.export_renderers,
-    $.pivotUtilities.locales.pt.app_renderers
+    $.pivotUtilities.locales.pt.app_renderers,
+    $.pivotUtilities.gtRenderers
+  );
+
+  const aggregators = $.extend(
+    $.pivotUtilities.aggregators,
+    $.pivotUtilities.customAggs
   );
 
   const renderers = locale === "pt" ? ptRenderers : enRenderers;
+
+  $("#receita-distribuicao").on('keypress', (evtKey) => {
+    if (evtKey.key.toUpperCase() === "ENTER") {
+      if (!pivotData) {
+        console.log('Sem pivot data')
+        return
+      }
+
+      const configObj = $("#pivottable-csv-output").data("pivotUIOptions");
+      const configCopy = JSON.parse(JSON.stringify(configObj)); // Fast cloning with data loss
+      //delete some values which will not serialize to JSON
+      delete configCopy["aggregators"];
+      delete configCopy["renderers"];
+      //delete some bulky default values
+      delete configCopy["rendererOptions"];
+      delete configCopy["localeStrings"];
+
+      const num = +$("#receita-distribuicao").val().replaceAll(".","").replaceAll(",",".")
+
+      $.pivotUtilities.customAggs = {
+        'Multifact Aggregators': $.pivotUtilities.multifactAggregatorGenerator(aggMap, derivedAggregations),
+        'Multifact Aggregators Participacao': $.pivotUtilities.multifactAggregatorGenerator(aggMapParticipacao, derivedAggregationsParticipacaoCalc(num))
+      }
+
+      const aggregatorsNovo = $.extend(
+        $.pivotUtilities.aggregators,
+        $.pivotUtilities.customAggs
+      );
+      
+      configCopy.renderers = renderers
+      configCopy.aggregators = aggregatorsNovo
+      //configCopy.rendererOptions = { aggregations : { defaultAggregations: aggMap, derivedAggregations : derivedAggregations } }
+
+      $("#pivottable-csv-output").empty()
+      $("#pivottable-csv-output").removeData("pivotUIOptions");
+      $("#pivottable-csv-output").pivotUI(pivotData, configCopy, true);
+    }
+  })
 
   /**
    * @param {File} file Arquivo CSV
@@ -60,7 +117,11 @@ $(function(){
         $('#total-linhas-carregadas').text(parsed.data.length)
         const data = convertCSVRipperToNumber(parsed.data);
         pivotData = data;
-        $("#pivottable-csv-output").pivotUI(data, { renderers: renderers }, true, locale);
+        $("#pivottable-csv-output").pivotUI(data, {
+          renderers: renderers,
+          aggregators: aggregators,
+          rendererOptions : { aggregations : { defaultAggregations: aggMap, derivedAggregations : derivedAggregations } }
+        }, true, locale);
       }
     });
   };
