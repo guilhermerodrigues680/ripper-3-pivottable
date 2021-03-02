@@ -5,8 +5,8 @@
     ]
   },
   "compilerOptions": {
-      "target": "es2019",
-      "module": "commonjs"
+    "target": "es2019",
+    "module": "es6"
   },
   "exclude": [
     "node_modules"
