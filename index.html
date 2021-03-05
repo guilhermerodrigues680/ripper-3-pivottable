@@ -25,79 +25,98 @@
     <script src="vendor/pivottable/dist/d3_renderers.js"></script>
     <script src="vendor/pivottable/dist/c3_renderers.js"></script>
     <script src="vendor/pivottable/dist/export_renderers.js"></script>
-    <script src="app-pivottable/app_renderers.js"></script>
     <!-- pivottable/dist/pivot.pt.js modificado-->
     <script src="app-pivottable/app_pivot.pt.js"></script>
+    <!-- O App render deve ficar depois de todos os js -->
+    <script src="app-pivottable/app_renderers.js"></script>
 
     <link rel="stylesheet" href="vendor/tailwindcss-2.0.3/tailwind.css">
     <link rel="stylesheet" href="app-pivot.css">
     <link rel="stylesheet" href="app.css">
 </head>
-<body class="h-full border-4 border-dotted border-transparent">
+<body class="h-full font-app">
   <!-- No inicio do body -->
   <script type="module" src="app.js"></script>
 
-  <div class="container mx-auto h-full">
-    <div class="font-sans text-gray-700">
-      <h3 class="text-lg">Pivottable CSV - v0.0.1-beta</h3>
-      
-      <div class="font-extralight">
-        <div>
-          Solte um arquivo CSV nesta página ou
-          <label>
-            <span class="focus:outline-none text-white text-xs py-1 px-5 rounded-md bg-gray-500 hover:bg-gray-600 hover:shadow-lg cursor-pointer">
-              escolha um
-            </span>
-            <input type="file" id="csv-chooser" accept=".csv" class="hidden">
-          </label>
-        </div>
-        <div>
-          <div>Arquivo: <span id="csv-file-name">null</span></div>
-          <div>Tamanho do arquivo: <span id="total-bytes-file">null</span></div>
-          <div>Linhas geradas: <span id="total-linhas-geradas">null</span></div>
-          <div>Linhas carregadas: <span id="total-linhas-carregadas">null</span></div>
-          <div>
-            <button id="btn-csv-viewer" class="focus:outline-none text-white text-xs py-1 px-5 rounded-md bg-blue-500 hover:bg-blue-600 hover:shadow-lg">
-              Abrir planilha com CSV
-            </button>
-          </div>
-        </div>
-        <em><small>Nota: os dados nunca saem do seu navegador.</small></em>
-      </div>
+  <div class="app-body-container">
 
-      <h4 class="my-4">Visualizações do usuário</h4>
-      <div class="my-05">
-        <input type="text" id="nome-visualizacao" placeholder="Nome da visualização" class="rounded-lg p-1 border border-gray-200 text-xs text-gray-800 bg-white w-80">
-        <button id="btn-salvar-visualizacao" class="focus:outline-none text-white text-xs py-1 px-5 rounded-md bg-blue-500 hover:bg-blue-600 hover:shadow-lg">
-          Salvar visualização no localStorage
-        </button>
-      </div>
-      <div class="my-05">
-        <select id="stored-views" class="rounded-lg p-1 border border-gray-200 text-xs text-gray-800 bg-white w-80">
-        </select>
-        <button id="btn-carregar-visualizacao" class="focus:outline-none text-white text-xs py-1 px-5 rounded-md bg-yellow-500 hover:bg-yellow-600 hover:shadow-lg">
-          Carregar visualização do localStorage
-        </button>
-        <button id="btn-deletar-visualizacao" class="focus:outline-none text-white text-xs py-1 px-5 rounded-md bg-red-500 hover:bg-red-600 hover:shadow-lg">
-          Deletar visualização do localStorage
-        </button>
-      </div>
-      <div class="my-05">
-        <button id="btn-exportar-visualizacoes" class="focus:outline-none text-white text-xs py-1 px-5 rounded-md bg-purple-500 hover:bg-purple-600 hover:shadow-lg">
-          Exportar Visualizações
-        </button>
-        <label>
-          <span class="focus:outline-none text-white text-xs py-1 px-5 rounded-md bg-purple-500 hover:bg-purple-600 hover:shadow-lg cursor-pointer">
-            Importar Visualizações
-          </span>
-          <input id="btn-importar-visualizacoes" type="file" class="hidden">
-        </label>
+    <!-- HEADER -->
+    <div class="header w-full text-white font-light bg-app-blue">
+      <div class="container mx-auto h-full flex justify-center items-center">
+        <span class="text-xl">PivotTable CSV</span>
+        <span class="flex-1"></span>
+        <a href="/" class="flex items-center justify-center outline-none text-sm uppercase font-medium hover:bg-app-white-transparent-6 px-4 py-1 rounded transition active:bg-app-white-transparent-33">
+          <span class="text-xl">&#8592;</span>&nbsp;Voltar
+        </a>
       </div>
     </div>
 
-    <div class="w-full border border-gray-200 my-4"></div>
+    <div class="main container mx-auto h-full mt-2">
+      <div class="text-gray-700">
+        <h3 class="text-lg">Pivottable CSV - v0.0.1-beta</h3>
+        
+        <div class="font-extralight">
+          <div>
+            Solte um arquivo CSV nesta página ou
+            <label>
+              <span class="focus:outline-none text-white text-xs py-1 px-5 rounded-md bg-gray-500 hover:bg-gray-600 hover:shadow-lg cursor-pointer">
+                escolha um
+              </span>
+              <input type="file" id="csv-chooser" accept=".csv" class="hidden">
+            </label>
+          </div>
+          <div>
+            <div>Arquivo: <span id="csv-file-name">null</span></div>
+            <div>Tamanho do arquivo: <span id="total-bytes-file">null</span></div>
+            <div>Linhas geradas: <span id="total-linhas-geradas">null</span></div>
+            <div>Linhas carregadas: <span id="total-linhas-carregadas">null</span></div>
+            <div>
+              <button id="btn-csv-viewer" class="focus:outline-none text-white text-xs py-1 px-5 rounded-md bg-blue-500 hover:bg-blue-600 hover:shadow-lg">
+                Abrir planilha com CSV
+              </button>
+            </div>
+          </div>
+          <em><small>Nota: os dados nunca saem do seu navegador.</small></em>
+        </div>
 
-    <div id="pivottable-csv-output" class="mt-4"></div>
+        <h4 class="my-4">Visualizações do usuário</h4>
+        <div class="my-05">
+          <input type="text" id="nome-visualizacao" placeholder="Nome da visualização" class="rounded-lg p-1 border border-gray-200 text-xs text-gray-800 bg-white w-80 hover:bg-gray-100 hover:border-gray-300 focus-within:bg-gray-100 focus-within:border-gray-300 outline-none">
+          <button id="btn-salvar-visualizacao" class="focus:outline-none text-white text-xs py-1 px-5 rounded-md bg-blue-500 hover:bg-blue-600 hover:shadow-lg">
+            Salvar visualização no localStorage
+          </button>
+        </div>
+        <div class="my-0.5">
+          <select id="stored-views" class="select-arrow-bg w-80 rounded-lg p-1 border border-gray-200 text-xs text-gray-800 outline-none appearance-none cursor-pointer hover:bg-gray-100 hover:border-gray-300 focus-within:bg-gray-100 focus-within:border-gray-300">
+          </select>
+          <button id="btn-carregar-visualizacao" class="focus:outline-none text-white text-xs py-1 px-5 rounded-md bg-yellow-500 hover:bg-yellow-600 hover:shadow-lg">
+            Carregar visualização do localStorage
+          </button>
+          <button id="btn-deletar-visualizacao" class="focus:outline-none text-white text-xs py-1 px-5 rounded-md bg-red-500 hover:bg-red-600 hover:shadow-lg">
+            Deletar visualização do localStorage
+          </button>
+        </div>
+        <div class="my-0.5">
+          <button id="btn-exportar-visualizacoes" class="focus:outline-none text-white text-xs py-1 px-5 rounded-md bg-purple-500 hover:bg-purple-600 hover:shadow-lg">
+            Exportar Visualizações
+          </button>
+          <label>
+            <span class="focus:outline-none text-white text-xs py-1 px-5 rounded-md bg-purple-500 hover:bg-purple-600 hover:shadow-lg cursor-pointer">
+              Importar Visualizações
+            </span>
+            <input id="btn-importar-visualizacoes" type="file" class="hidden">
+          </label>
+        </div>
+      </div>
+
+      <div class="w-full border border-gray-200 my-4"></div>
+
+      <div id="pivottable-csv-output" class="mt-4"></div>
+    </div>
+
+    <div class="footer bg-gray-100 text-base leading-none text-gray-400 font-extralight flex items-center justify-center border-t">
+      <p>Powered by © Neuco Co. 2021</p>
+    </div>
   </div>
 </body>
 </html>
